@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -9,21 +9,16 @@ import { fetchCollectionsStart } from '../../redux/shop/shop.actions';
 
 
 import './shop.styles.scss';
-class ShopPage extends React.Component {
+const ShopPage = ({ fetchCollectionsStart, match }) => {
 
-    componentDidMount() {
-        const { fetchCollectionsStart } = this.props;
-        fetchCollectionsStart();
-    }
+    useEffect(() => {
+        fetchCollectionsStart()
+    }, [fetchCollectionsStart])
 
-    render() {
-        const { match } = this.props;
-        return (<div className="shop-page">
-            <Route exact path={`${match.path}`} component={CollectionsOverviewContainer} />
-            <Route path={`${match.path}/:collectionId`} component={CollectionPageContainer} />
-            {/* If collection isn't loaded, it returns false which we reverse with the bang operator to indicate loading state */}
-        </div>)
-    }
+    return (<div className="shop-page">
+        <Route exact path={`${match.path}`} component={CollectionsOverviewContainer} />
+        <Route path={`${match.path}/:collectionId`} component={CollectionPageContainer} />
+    </div>)
 }
 
 
