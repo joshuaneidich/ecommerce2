@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const compression = require('compression')
 const path = require('path');
 const enforce = require('express-sslify');
 
@@ -11,10 +12,14 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const app = express();
 const port = process.env.PORT || 5000;
 
+app.use(compression())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+app.use(enforce.HTTPS({
+    trustProtoHeader: true
+}))
 
 app.use(cors());
 
